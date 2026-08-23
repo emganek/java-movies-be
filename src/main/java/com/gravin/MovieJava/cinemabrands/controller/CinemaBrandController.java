@@ -19,7 +19,7 @@ import java.io.IOException;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/v1/cinema-brands")
+@RequestMapping("/api/v1/cinema-brands")
 @RequiredArgsConstructor
 public class CinemaBrandController {
     private final CinemaBrandService cinemaBrandService;

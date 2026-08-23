@@ -21,7 +21,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/v1/cinema-locations")
+@RequestMapping("/api/v1/cinema-locations")
 @RequiredArgsConstructor
 public class CinemaLocationController {
     private final CinemaLocationService cinemaLocationService;

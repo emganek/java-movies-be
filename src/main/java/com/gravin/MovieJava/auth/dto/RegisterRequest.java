@@ -1,12 +1,10 @@
-package com.gravin.MovieJava.users.dto;
+package com.gravin.MovieJava.auth.dto;
 
-import com.gravin.MovieJava.common.enums.UserType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record CreateUserRequest(
+public record RegisterRequest(
         @NotEmpty(message = "Username is required")
         String username,
 
@@ -20,8 +18,6 @@ public record CreateUserRequest(
         String email,
 
         @Pattern(regexp = "^\\+?[0-9]{7,15}$", message = "Invalid phone format")
-        String phoneNumber,
-
-        @NotNull
-        UserType userType
-) {}
+        String phoneNumber
+) {
+}

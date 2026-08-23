@@ -11,7 +11,10 @@ public enum ErrorCode {
     CINEMA_LOCATION_NOT_FOUND(4007, "Cinema location not found"),
     MOVIE_NOT_FOUND(4008, "Movie not found"),
     SHOWTIME_NOT_FOUND(4009, "Showtime not found"),
-    SHOWTIME_CONFLICTS(4010, "Showtime conflicts");
+    SHOWTIME_CONFLICTS(4010, "Showtime conflicts"),
+    UNAUTHENTICATED(4011, "Authentication required"),
+    ACCESS_DENIED(4012, "You do not have permission to access this resource"),
+    INVALID_CREDENTIALS(4013, "Invalid username or password");
 
     private final int code;
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/v1/showtimes")
+@RequestMapping("/api/v1/showtimes")
 @RequiredArgsConstructor
 public class ShowtimeController {
     private final ShowtimeService showtimeService;

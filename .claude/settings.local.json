@@ -1,7 +1,24 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(Get-ChildItem *)"
+      "PowerShell(Get-ChildItem *)",
+      "Bash(./mvnw -q dependency:list)",
+      "Bash(./mvnw dependency:tree)",
+      "Bash(./mvnw -q -DskipTests compile)",
+      "Bash(rm -f /tmp/app.log)",
+      "Bash(./mvnw -q -DskipTests spring-boot:run)",
+      "Bash(echo \"started pid $!\")",
+      "Read(//tmp/**)",
+      "Bash(break)",
+      "Bash(./mvnw -q -DskipTests spring-boot:run -Dspring-boot.run.arguments=\"--server.port=8085\")",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git reset *)",
+      "Bash(git commit -q -m ' *)",
+      "Bash(git worktree *)",
+      "Bash(./mvnw -q -o compile)",
+      "Bash(./mvnw -q -o compile -DskipTests)",
+      "Bash(echo \"exit=$?\")"
     ]
   }
 }
