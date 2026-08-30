@@ -84,6 +84,10 @@ public class JwtService {
     }
 
     public Claims parseClaims(String token) {
+        if ( token == null || token.isBlank() ) {
+            return null;
+        }
+
         return Jwts.parser()
                 .verifyWith(signingKey)
                 .requireIssuer(securityProperties.jwt().issuer())

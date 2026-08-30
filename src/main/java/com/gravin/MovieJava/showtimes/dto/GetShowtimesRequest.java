@@ -11,5 +11,7 @@ public class GetShowtimesRequest extends FilterBaseRequest {
 
     private Long movieId;
 
+    private String movieCode;
+
     private LocalDate date;
 }

@@ -70,11 +70,4 @@ public class ShowtimeController {
 
         return ResponseEntity.ok(ApiResponse.ok(null));
     }
-
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<ApiResponse<Void>> deleteShowtime(@PathVariable Long id) {
-//        showtimeService.deleteShowtime(id);
-//
-//        return ResponseEntity.ok(ApiResponse.ok(null));
-//    }
 }

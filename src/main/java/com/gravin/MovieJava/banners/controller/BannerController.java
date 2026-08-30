@@ -1,7 +1,6 @@
 package com.gravin.MovieJava.banners.controller;
 
 import com.gravin.MovieJava.banners.dto.BannerResponse;
-import com.gravin.MovieJava.banners.dto.BannerWithPoster;
 import com.gravin.MovieJava.banners.service.BannerService;
 import com.gravin.MovieJava.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;

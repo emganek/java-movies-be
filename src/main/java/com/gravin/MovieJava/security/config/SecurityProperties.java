@@ -8,7 +8,8 @@ import java.util.List;
 @ConfigurationProperties(prefix = "app.security")
 public record SecurityProperties(
     Cors cors,
-    Jwt jwt
+    Jwt jwt,
+    RefreshToken refreshToken
 ){
     public record Cors(
         List<String> allowedOrigins
@@ -20,4 +21,12 @@ public record SecurityProperties(
         Duration refreshTokenTtl,
         String issuer
     ){}
+
+    public record RefreshToken(
+            String name,
+            String path,
+            String domain,
+            boolean secure,
+            String sameSite
+    ) {}
 }

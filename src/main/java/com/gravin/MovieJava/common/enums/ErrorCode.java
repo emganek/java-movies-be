@@ -14,7 +14,9 @@ public enum ErrorCode {
     SHOWTIME_CONFLICTS(4010, "Showtime conflicts"),
     UNAUTHENTICATED(4011, "Authentication required"),
     ACCESS_DENIED(4012, "You do not have permission to access this resource"),
-    INVALID_CREDENTIALS(4013, "Invalid username or password");
+    INVALID_CREDENTIALS(4013, "Invalid username or password"),
+    INVALID_REFRESH_TOKEN(4014, "Invalid refresh token"),
+    REFRESH_TOKEN_EXPIRED(4015, "Refresh token expired");
 
     private final int code;
 

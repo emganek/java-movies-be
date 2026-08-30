@@ -66,7 +66,12 @@ public class ShowtimeServiceImpl implements ShowtimeService {
 
     @Override
     public PaginationData<Showtime> getShowtimes(GetShowtimesRequest req) {
-        Specification<Showtime> spec = Specification.allOf(ShowtimeSpecs.cinemaLocationIs(req.getCinemaLocationId()), ShowtimeSpecs.movieIs(req.getMovieId()), ShowtimeSpecs.dateIs(req.getDate()));
+        Specification<Showtime> spec = Specification.allOf(
+                ShowtimeSpecs.cinemaLocationIs(req.getCinemaLocationId()),
+                ShowtimeSpecs.movieIs(req.getMovieId()),
+                ShowtimeSpecs.dateIs(req.getDate()),
+                ShowtimeSpecs.movieCodeIs(req.getMovieCode())
+        );
 
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
 

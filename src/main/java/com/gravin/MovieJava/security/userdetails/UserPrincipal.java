@@ -35,12 +35,12 @@ public class UserPrincipal implements UserDetails {
     }
 
     public static UserPrincipal from(User user) {
-        String role = "ROLE_" + user.getUserType().name();
+        int role = user.getUserType().getValue();
         return new UserPrincipal(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority(role))
+                List.of(new SimpleGrantedAuthority(String.valueOf(role)))
         );
     }
 

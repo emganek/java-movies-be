@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -50,7 +51,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers(
+                                "/api/v1/auth/**",
+                                "/api/v1/banners"
+                        ).permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/movies").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/movies/{code}").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/showtimes").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/showtimes/{showtimeId}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling( ex -> ex
