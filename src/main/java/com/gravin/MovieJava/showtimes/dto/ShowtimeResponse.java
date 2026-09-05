@@ -1,5 +1,6 @@
 package com.gravin.MovieJava.showtimes.dto;
 
+import com.gravin.MovieJava.movies.dto.MovieResponse;
 import com.gravin.MovieJava.showtimes.domain.Showtime;
 
 import java.math.BigDecimal;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public record ShowtimeResponse(
         Long id,
-        MovieSummary movie,
+        MovieResponse movie,
         CinemaLocationSummary cinemaLocation,
         LocalDateTime dateTime,
         BigDecimal ticketPrice,
@@ -18,7 +19,7 @@ public record ShowtimeResponse(
     public static ShowtimeResponse from(Showtime showtime) {
         return new ShowtimeResponse(
                 showtime.getId(),
-                MovieSummary.from(showtime.getMovie()),
+                MovieResponse.from(showtime.getMovie()),
                 CinemaLocationSummary.from(showtime.getCinemaLocation()),
                 showtime.getDateTime(),
                 showtime.getTicketPrice(),

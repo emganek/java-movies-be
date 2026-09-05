@@ -1,5 +1,7 @@
 package com.gravin.MovieJava.showtimes.service.impl;
 
+import com.gravin.MovieJava.cinemabrands.domain.CinemaBrand;
+import com.gravin.MovieJava.cinemabrands.repository.CinemaBrandRepository;
 import com.gravin.MovieJava.cinemalocations.domain.CinemaLocation;
 import com.gravin.MovieJava.cinemalocations.repository.CinemaLocationRepository;
 import com.gravin.MovieJava.common.enums.ErrorCode;
@@ -7,12 +9,11 @@ import com.gravin.MovieJava.common.exception.AppException;
 import com.gravin.MovieJava.common.response.PaginationData;
 import com.gravin.MovieJava.movies.domain.Movie;
 import com.gravin.MovieJava.movies.repository.MovieRepository;
+import com.gravin.MovieJava.movies.service.MovieService;
 import com.gravin.MovieJava.showtimes.domain.Seat;
 import com.gravin.MovieJava.showtimes.domain.SeatType;
 import com.gravin.MovieJava.showtimes.domain.Showtime;
-import com.gravin.MovieJava.showtimes.dto.CreateShowtimeRequest;
-import com.gravin.MovieJava.showtimes.dto.GetShowtimesRequest;
-import com.gravin.MovieJava.showtimes.dto.UpdateShowtimeRequest;
+import com.gravin.MovieJava.showtimes.dto.*;
 import com.gravin.MovieJava.showtimes.repository.ShowtimeRepository;
 import com.gravin.MovieJava.showtimes.repository.specification.ShowtimeSpecs;
 import com.gravin.MovieJava.showtimes.service.ShowtimeService;
@@ -26,8 +27,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,10 @@ public class ShowtimeServiceImpl implements ShowtimeService {
 
     private final ShowtimeRepository showtimeRepo;
     private final CinemaLocationRepository cinemaLocationRepo;
+    private final CinemaBrandRepository cinemaBrandRepository;
     private final MovieRepository movieRepo;
+
+    private final MovieService movieService;
 
     @Override
     @Transactional
@@ -103,6 +107,62 @@ public class ShowtimeServiceImpl implements ShowtimeService {
         }
 
         return showtimeRepo.save(showtime);
+    }
+
+    @Override
+    public List<ShowtimesGroupedByBrandResponse> getMovieShowtimesGroupByBrand(GetShowTimeGroupedByBrandRequest req) {
+        Movie movie = movieService.getMovie(req.movieCode())
+                .orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_FOUND));
+
+        List<Showtime> showtimes = req.date() == null
+                ? showtimeRepo.findByMovieIdOrderByDateTimeAsc(movie.getId())
+                : showtimeRepo.findByMovieIdForDay(movie.getId(), req.date().atStartOfDay(), req.date().plusDays(1).atStartOfDay());
+
+//        Map<Long, List<ShowtimeResponse>> cinemaLocationIdShowtimes = showtimes.stream().collect(
+//                Collectors.groupingBy(
+//                        s -> s.getCinemaLocation().getId(),
+//                        Collectors.mapping(ShowtimeResponse::from, Collectors.toList())
+//        ) );
+
+        Map<Long, CinemaLocationShowtimes> locationIdLocationShowtimes = showtimes.stream().collect(
+                Collectors.groupingBy(
+                        s -> s.getCinemaLocation().getId(),
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                showtime -> {
+                                    CinemaLocation location = showtime.getFirst().getCinemaLocation();
+
+                                    var showtimeResponses = showtime.stream()
+                                            .map(ShowtimeResponse::from)
+                                            .toList();
+
+                                    return CinemaLocationShowtimes.from(CinemaLocationSummary.from(location), showtimeResponses);
+                                }
+                        )
+                ) );
+
+        Set<Long> brandIds = showtimes.stream()
+                .map(s -> s.getCinemaLocation().getCinemaBrand().getId())
+                .collect(Collectors.toSet());
+
+        if (brandIds.isEmpty()) {
+            return List.of();
+        }
+
+        List<CinemaBrand> cinemaBrands = cinemaBrandRepository.findByIdInOrderByNameAsc(brandIds);
+
+        return cinemaBrands.stream()
+                .map(brand -> {
+                    List<CinemaLocationShowtimes> locationShowtimes = new ArrayList<>();
+
+                    locationIdLocationShowtimes.forEach((locationId, cinemaLocationShowtimes) -> {
+                        if (Objects.equals(cinemaLocationShowtimes.showtimes().getFirst().cinemaLocation().cinemaBrandId(), brand.getId())) {
+                            locationShowtimes.add(cinemaLocationShowtimes);
+                        }
+                    });
+
+                    return ShowtimesGroupedByBrandResponse.from(brand, locationShowtimes);
+                }).toList();
     }
 
     @Override

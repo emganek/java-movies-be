@@ -52,6 +52,13 @@ public class ShowtimeController {
         return ResponseEntity.ok(ApiResponse.ok(ShowtimeResponse.from(showtime)));
     }
 
+    @GetMapping("/grouped-by-brand")
+    public ResponseEntity<ApiResponse<List<ShowtimesGroupedByBrandResponse>>> getMovieShowtimesGroupByBrand(
+            @ModelAttribute GetShowTimeGroupedByBrandRequest req
+    ) {
+        return ResponseEntity.ok(ApiResponse.ok(showtimeService.getMovieShowtimesGroupByBrand(req)));
+    }
+
     @PutMapping("/{showtimeId}")
     public ResponseEntity<ApiResponse<ShowtimeResponse>> updateShowtime(
             @PathVariable Long showtimeId,
