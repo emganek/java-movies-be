@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public final class ShowtimeSpecs {
 
+    // Private constructure so that no one can create new instance of this class
     private ShowtimeSpecs() {}
 
     public static Specification<Showtime> cinemaLocationIs(Long cinemaLocationId) {

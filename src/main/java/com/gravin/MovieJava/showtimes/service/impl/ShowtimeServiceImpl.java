@@ -188,7 +188,7 @@ public class ShowtimeServiceImpl implements ShowtimeService {
                 seat.setType(SeatType.NORMAL);
             }
 
-            updateSeatPrices(seats, price);
+            updateSeatPrice(seat, price);
 
             seats.add(seat);
         }
@@ -197,12 +197,17 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     }
 
     private void updateSeatPrices(List<Seat> seats, BigDecimal price) {
-        BigDecimal vipPrice = price.multiply(VIP_MULTIPLIER);
 
         seats.forEach(seat -> {
             if (seat.getBooked() != true) {
-                seat.setPrice(seat.getType() == SeatType.VIP ? vipPrice : price);
+                updateSeatPrice(seat, seat.getPrice());
             }
         });
+    }
+
+    private void updateSeatPrice(Seat seat, BigDecimal price) {
+        BigDecimal vipPrice = price.multiply(VIP_MULTIPLIER);
+
+        seat.setPrice(seat.getType() == SeatType.VIP ? vipPrice : price);
     }
 }

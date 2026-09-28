@@ -21,6 +21,7 @@ public class Seat {
 
     private BigDecimal price;
 
+    @Column(nullable = false)
     private Boolean booked;
 
     @Version

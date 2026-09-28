@@ -3,6 +3,7 @@ package com.gravin.MovieJava.common.exception;
 import com.gravin.MovieJava.common.enums.ErrorCode;
 import com.gravin.MovieJava.common.response.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse<Map<String, String>>> handleMethodArgumentNotValid(
@@ -60,6 +62,13 @@ public class GlobalExceptionHandler {
             AppException exception,
             HttpServletRequest request
     ) {
+        log.error(
+                "Unhandled handleAppException for {} {}",
+                request.getMethod(),
+                request.getRequestURI(),
+                exception
+        );
+
         return ResponseEntity.internalServerError().body(
                 ApiErrorResponse.of(
                         exception.getErrorCode().getCode(),
@@ -74,6 +83,13 @@ public class GlobalExceptionHandler {
             RuntimeException exception,
             HttpServletRequest request
     ) {
+        log.error(
+                "handleRuntimeException {} {}",
+                request.getMethod(),
+                request.getRequestURI(),
+                exception
+        );
+
         return ResponseEntity.internalServerError().body(
                 ApiErrorResponse.of(
                         500,

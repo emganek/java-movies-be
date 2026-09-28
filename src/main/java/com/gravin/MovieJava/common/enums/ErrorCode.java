@@ -16,7 +16,14 @@ public enum ErrorCode {
     ACCESS_DENIED(4012, "You do not have permission to access this resource"),
     INVALID_CREDENTIALS(4013, "Invalid username or password"),
     INVALID_REFRESH_TOKEN(4014, "Invalid refresh token"),
-    REFRESH_TOKEN_EXPIRED(4015, "Refresh token expired");
+    REFRESH_TOKEN_EXPIRED(4015, "Refresh token expired"),
+    SHOWTIME_ALREADY_STARTED(4016, "Showtime is already started"),
+    SEAT_REQUIRED(4017, "Seat is required"),
+    SEAT_ALREADY_BOOKED(4018, "Seat is already booked"),
+    SEAT_NOT_FOUND(4019, "At least one seat is not found"),
+    BOOKING_NOT_FOUND(4020, "Booking is not found"),
+    SEAT_ALREADY_CANCELED(4021, "Seat is already canceled"),
+    BOOKING_PROCESSING(4022, "Booking is processing");
 
     private final int code;
 
